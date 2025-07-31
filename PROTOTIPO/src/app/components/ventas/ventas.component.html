@@ -1,0 +1,140 @@
+<!-- CONTENEDOR PRINCIPAL -->
+ <h1>GESTION DE VENTAS</h1>
+<div class="ventas-container">
+
+  <h2>Registrar Venta</h2>
+
+  <!-- Selección de cliente -->
+  <div class="form-venta">
+    <select [(ngModel)]="clienteSeleccionado" class="select-dark">
+      <option [ngValue]="null">-- Selecciona un cliente --</option>
+      <option *ngFor="let c of clientes" [ngValue]="c.id_cliente">
+        {{ c.nombre }}
+      </option>
+    </select>
+  </div>
+
+  <hr />
+
+  <!-- Lista de productos disponibles -->
+  <h3>Productos disponibles</h3>
+  <table class="tabla-stock table-gen">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Cantidad</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of productos">
+        <td>{{ p.nombre }}</td>
+        <td>{{ p.precio | currency }}</td>
+        <td>{{ obtenerCantidad(p.id_producto!) }}</td>
+        <td>
+          <button class="btn-accion" (click)="agregarProducto(p)">+</button>
+          <button class="btn-accion" (click)="quitarProducto(p)">–</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr />
+
+  <!-- Carrito / resumen de venta -->
+  <h3>Resumen de Venta</h3>
+  <table class="tabla-stock table-gen">
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Precio</th>
+        <th>Cantidad</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let i of carrito">
+        <td>{{ i.producto.nombre }}</td>
+        <td>{{ i.producto.precio | currency }}</td>
+        <td>{{ i.cantidad }}</td>
+        <td>{{ (i.cantidad * i.producto.precio) | currency }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Total y botón de venta -->
+  <div class="form-total">
+    <span class="total-label">Total:</span>
+    <span class="total-valor">{{ total | currency }}</span>
+    <button class="btn-venta" (click)="registrarVenta()">Registrar Venta</button>
+  </div>
+
+  <!-- Descargas PDF / Excel -->
+  <div *ngIf="ultimaVentaId" class="form-descargas">
+    <button class="btn-pdf"   (click)="onDescargarPdf()">Descargar PDF</button>
+    <button class="btn-excel" (click)="onDescargarExcel()">Descargar Excel</button>
+  </div>
+
+  <hr />
+
+  <!-- Reporte diario -->
+  <h4>Reporte de Ventas Diarias</h4>
+  <div class="form-reporte-diario">
+    <input type="date" [(ngModel)]="fechaReporte" />
+    <button (click)="cargarReporte()">Cargar Reporte</button>
+  </div>
+  <div *ngIf="reporte" class="reporte-output">
+    <p>Total de ventas: {{ reporte.total_ventas }}</p>
+    <p>Total de ingresos: {{ reporte.total_ingresos | currency }}</p>
+  </div>
+
+  <hr />
+
+  <!-- Reporte por cliente -->
+  <h3>Reporte por Cliente</h3>
+  <div class="form-reporte-cliente">
+    <select [(ngModel)]="clienteSeleccionado" class="select-dark">
+      <option [ngValue]="null">-- Selecciona un cliente --</option>
+      <option *ngFor="let c of clientes" [ngValue]="c.id_cliente">
+        {{ c.nombre }}
+      </option>
+    </select>
+    <button (click)="cargarReporteCliente()">Cargar Reporte</button>
+  </div>
+  <div *ngIf="reporteCliente" class="reporte-output">
+    <p><strong>Cliente:</strong> {{ reporteCliente.cliente }}</p>
+    <p><strong>Total ventas:</strong> {{ reporteCliente.total_ventas }}</p>
+    <p><strong>Total ingresos:</strong> {{ reporteCliente.total_ingresos | currency }}</p>
+  </div>
+
+  <hr />
+
+  <!-- Reporte por producto vendido -->
+  <h3>Reporte por Producto Vendido</h3>
+  <div class="form-reporte-producto">
+    <input type="date" [(ngModel)]="fechaInicioProducto" placeholder="Fecha inicio" />
+    <input type="date" [(ngModel)]="fechaFinProducto"    placeholder="Fecha fin" />
+    <button (click)="cargarReportePorProducto()">Cargar Reporte</button>
+  </div>
+  <table *ngIf="reporteProductos.length" class="tabla-stock table-gen">
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Unidades vendidas</th>
+        <th>Ingreso total</th>
+        <th>% Participación</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of reporteProductos">
+        <td>{{ r.producto }}</td>
+        <td>{{ r.unidades_vendidas }}</td>
+        <td>{{ r.ingreso_total | currency }}</td>
+        <td>{{ r.porcentaje }}%</td>
+      </tr>
+    </tbody>
+  </table>
+  <p *ngIf="!reporteProductos.length">No hay datos para ese rango.</p>
+
+</div>

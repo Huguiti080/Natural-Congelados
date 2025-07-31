@@ -1,0 +1,28 @@
+<h2> Productos con Stock Crítico</h2>
+
+<table class="tabla-stock" *ngIf="productosCriticos.length > 0; else sinDatos">
+  <thead>
+    <tr>
+      <th>Producto</th>
+      <th>Categoría</th>
+      <th>Stock</th>
+      <th>Precio</th>
+      <th>Proveedor</th>
+      <th>Alerta</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of productosCriticos">
+      <td>{{ p.nombre }}</td>
+      <td>{{ p.categoria }}</td>
+      <td>{{ p.stock }}</td>
+      <td>{{ p.precio | currency }}</td>
+      <td>{{ p.proveedor }}</td>
+      <td><span class="alerta">⚠ Bajo stock</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #sinDatos>
+  <p> Todos los productos tienen stock suficiente.</p>
+</ng-template>

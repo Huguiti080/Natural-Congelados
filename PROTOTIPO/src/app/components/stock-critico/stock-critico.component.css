@@ -1,0 +1,21 @@
+.tabla-stock {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background-color: #111;
+  color: #fff;
+}
+
+.tabla-stock th, .tabla-stock td {
+  border: 1px solid #333;
+  padding: 8px;
+  text-align: center;
+}
+
+.alerta {
+  color: #ff4d4d;
+  font-weight: bold;
+  background-color: #330000;
+  padding: 4px 8px;
+  border-radius: 5px;
+}

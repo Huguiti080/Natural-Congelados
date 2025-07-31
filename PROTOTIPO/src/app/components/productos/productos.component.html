@@ -1,0 +1,188 @@
+<!-- PRODUCTOS COMPONENTE (HTML) -->
+<h1>GESTIÓN DE PRODUCTOS</h1>
+
+<h2>Lista de productos</h2>
+<table class="tabla-stock table-gen">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Categoría</th>
+      <th>Precio</th>
+      <th>Stock</th>
+      <th>Proveedor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of productos">
+      <td>{{ p.id_producto }}</td>
+      <td>{{ p.nombre }}</td>
+      <td>{{ p.categoria }}</td>
+      <td>{{ p.precio | currency }}</td>
+      <td>{{ p.stock }}</td>
+      <td>{{ p.proveedor }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Agregar producto</h3>
+<div class="form-agregar">
+  <input [(ngModel)]="nuevo.nombre"      placeholder="Nombre" />
+  <input [(ngModel)]="nuevo.categoria"   placeholder="Categoría" />
+  <input [(ngModel)]="nuevo.precio" type="number" placeholder="Precio" />
+  <input [(ngModel)]="nuevo.stock"  type="number" placeholder="Stock" />
+  <input [(ngModel)]="nuevo.proveedor"   placeholder="Proveedor" />
+  <button (click)="agregar()">Agregar</button>
+</div>
+
+<h3>Productos con Stock Crítico</h3>
+<table class="tabla-stock table-gen" *ngIf="productosCriticos.length > 0; else sinStockCritico">
+  <thead>
+    <tr>
+      <th>Producto</th>
+      <th>Categoría</th>
+      <th>Stock</th>
+      <th>Precio</th>
+      <th>Proveedor</th>
+      <th>Alerta</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of productosCriticos">
+      <td>{{ p.nombre }}</td>
+      <td>{{ p.categoria }}</td>
+      <td>{{ p.stock }}</td>
+      <td>{{ p.precio | currency }}</td>
+      <td>{{ p.proveedor }}</td>
+      <td><span class="alerta">⚠ Bajo stock</span></td>
+    </tr>
+  </tbody>
+</table>
+<ng-template #sinStockCritico>
+  <p>Todos los productos tienen stock suficiente.</p>
+</ng-template>
+
+<h3>Registrar Entrada de Producto</h3>
+<div class="form-entrada">
+  <select [(ngModel)]="entrada.producto_id">
+    <option *ngFor="let p of productos" [value]="p.id_producto">
+      {{ p.nombre }}
+    </option>
+  </select>
+
+  <input type="number" [(ngModel)]="entrada.cantidad" placeholder="Cantidad" />
+
+  <input type="date"   [(ngModel)]="entrada.fecha_entrada" />
+
+  <input type="text"   [(ngModel)]="entrada.proveedor" placeholder="Proveedor" />
+
+  <button (click)="registrarEntrada()">Registrar</button>
+
+  <span *ngIf="mensajeExito" class="exito">{{ mensajeExito }}</span>
+</div>
+
+<h3>Historial de Entradas</h3>
+<table class="tabla-stock table-gen" *ngIf="historialEntradas.length > 0">
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Producto</th>
+      <th>Cantidad</th>
+      <th>Proveedor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let e of historialEntradas">
+      <td>{{ e.fecha_entrada }}</td>
+      <td>{{ e.producto }}</td>
+      <td>{{ e.cantidad }}</td>
+      <td>{{ e.proveedor }}</td>
+    </tr>
+  </tbody>
+</table>
+<p *ngIf="historialEntradas.length === 0">Sin registros de entrada.</p>
+
+
+<!-- Navegación entre secciones (agregar después del título principal) -->
+<div class="section-nav">
+
+  <button class="nav-btn" (click)="toggleFormularioPedido()" 
+          [class.active]="mostrarFormularioPedido">
+    Pedidos
+  </button>
+</div>
+
+<!-- Tu contenido de productos existente (envolver en esta condición) -->
+<div *ngIf="!mostrarFormularioPedido">
+  <!-- TODO TU CONTENIDO ACTUAL DE PRODUCTOS VA AQUÍ -->
+</div>
+
+<!-- NUEVA SECCIÓN DE PEDIDOS -->
+<div *ngIf="mostrarFormularioPedido" class="pedidos-section">
+  <h2>Gestión de Pedidos</h2>
+
+  <!-- Lista de pedidos -->
+  <div class="pedidos-lista">
+    <h3>Pedidos actuales</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Fecha</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pedido of pedidos">
+          <td>{{ pedido.id_pedido }}</td>
+          <td>{{ obtenerNombreProducto(pedido.producto_id) }}</td>
+          <td>{{ pedido.cantidad }}</td>
+          <td>{{ pedido.fecha }}</td>
+          <td>
+            <span class="estado-badge" [class]="'estado-' + pedido.estado">
+              {{ pedido.estado }}
+            </span>
+          </td>
+          <td>
+            <select (change)="actualizarEstadoPedido(pedido.id_pedido!, $any($event.target).value)" 
+                    [value]="pedido.estado" class="estado-select">
+              <option value="pendiente">Pendiente</option>
+              <option value="procesando">Procesando</option>
+              <option value="completado">Completado</option>
+              <option value="cancelado">Cancelado</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Formulario para crear pedido -->
+  <div class="crear-pedido">
+    <h3>Crear nuevo pedido</h3>
+    <form [formGroup]="pedidoForm" (ngSubmit)="crearPedido()" class="form-container">
+      <select formControlName="producto_id" class="form-input">
+        <option value="">Seleccionar producto</option>
+        <option *ngFor="let producto of productos" [value]="producto.id_producto">
+          {{ producto.nombre }} (Stock: {{ producto.stock }})
+        </option>
+      </select>
+      
+      <input type="number" formControlName="cantidad" placeholder="Cantidad" 
+             min="1" class="form-input">
+      
+      <select formControlName="estado" class="form-input">
+        <option value="pendiente">Pendiente</option>
+        <option value="procesando">Procesando</option>
+        <option value="completado">Completado</option>
+      </select>
+      
+      <button type="submit" [disabled]="!pedidoForm.valid" class="submit-btn">
+        Crear Pedido
+      </button>
+    </form>
+  </div>
+</div>

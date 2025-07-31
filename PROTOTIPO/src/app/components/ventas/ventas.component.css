@@ -1,0 +1,170 @@
+/* ----------------------------------------
+   Contenedor general
+---------------------------------------- */
+:host, .ventas-container {
+  display: block;
+  padding: 1.5rem;
+  background-color: #121212;
+  color: #ffd600;
+  min-height: 100%;
+}
+
+/* ----------------------------------------
+   Tablas homogéneas
+---------------------------------------- */
+.table-gen,
+.tabla-stock {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  background-color: #181818;
+  color: #f5f5f5;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.table-gen th,
+.table-gen td,
+.tabla-stock th,
+.tabla-stock td {
+  border: 1px solid #333;
+  padding: 0.75rem;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.table-gen th,
+.tabla-stock th {
+  background: #23272f;
+  color: #ffd700;
+  font-weight: 600;
+}
+
+.table-gen tr:nth-child(even),
+.tabla-stock tr:nth-child(even) {
+  background: #222;
+}
+
+.table-gen tr:nth-child(odd),
+.tabla-stock tr:nth-child(odd) {
+  background: #191919;
+}
+
+/* ----------------------------------------
+   Botones de acción (+ / –)
+---------------------------------------- */
+.btn-accion {
+  padding: 0.3rem 0.6rem;
+  margin: 0 0.2rem;
+  background: #444;
+  color: #ffd600;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn-accion:hover {
+  background: #555;
+}
+
+/* ----------------------------------------
+   Formularios en grid
+---------------------------------------- */
+.form-venta,
+.form-total,
+.form-descargas,
+.form-reporte-diario,
+.form-reporte-cliente,
+.form-reporte-producto {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Inputs y selects */
+.select-dark,
+input[type="date"] {
+  padding: 0.6rem 0.8rem;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background: #1e1e1e;
+  color: #ffd600;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+.select-dark:focus,
+input[type="date"]:focus {
+  border-color: #ffd700;
+  outline: none;
+}
+
+/* Botones principales */
+button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  background: #b71c1c;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button:hover {
+  background: #d32f2f;
+}
+
+/* Botones PDF / Excel personalizados */
+.btn-pdf {
+  background: #dc3545;
+}
+.btn-excel {
+  background: #28a745;
+}
+
+/* Formato Total */
+.form-total {
+  justify-content: end;
+  gap: 1rem;
+}
+.total-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.total-valor {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* Reportes salida */
+.reporte-output p {
+  margin: 0.3rem 0;
+  font-size: 1rem;
+}
+
+/* Títulos */
+h2, h3, h4 {
+  color: #ffd700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Línea separadora */
+hr {
+  border: none;
+  border-top: 1px solid #333;
+  margin: 2rem 0;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .form-venta,
+  .form-total,
+  .form-descargas,
+  .form-reporte-diario,
+  .form-reporte-cliente,
+  .form-reporte-producto {
+    grid-auto-flow: row;
+  }
+}

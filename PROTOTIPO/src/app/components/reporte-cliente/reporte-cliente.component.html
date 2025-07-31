@@ -1,0 +1,21 @@
+<h2>Reporte por Cliente</h2>
+
+<label>Cliente:</label>
+<select [(ngModel)]="clienteSeleccionado">
+  <option [value]="c.id_cliente" *ngFor="let c of clientes">{{ c.nombre }}</option>
+</select>
+
+<button (click)="cargarReporte()">Cargar Reporte</button>
+
+<table border="1" *ngIf="ventas.length > 0">
+  <tr>
+    <th>ID Venta</th>
+    <th>Total</th>
+    <th>Fecha</th>
+  </tr>
+  <tr *ngFor="let v of ventas">
+    <td>{{ v.id_venta }}</td>
+    <td>${{ v.total }}</td>
+    <td>{{ v.fecha }}</td>
+  </tr>
+</table>

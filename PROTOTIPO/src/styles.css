@@ -1,0 +1,63 @@
+/* Fuente y fondo general */
+body {
+  background-color: #000;
+  color: #fff;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Paleta de colores */
+:root {
+  --rojo: #ff3333;
+  --amarillo: #ffcc00;
+  --verde: #33cc33;
+  --negro: #000;
+  --gris-oscuro: #1a1a1a;
+}
+
+/* Estilos para botones y enlaces */
+button, a {
+  background-color: var(--gris-oscuro);
+  color: var(--amarillo);
+  border: 1px solid var(--rojo);
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+button:hover, a:hover {
+  background-color: var(--rojo);
+  color: var(--negro);
+}
+
+/* Tablas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background-color: var(--gris-oscuro);
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--rojo);
+}
+
+th {
+  background-color: var(--negro);
+  color: var(--amarillo);
+}
+
+tr:hover {
+  background-color: rgba(255, 51, 51, 0.1);
+}
+
+/* Contenedores */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
